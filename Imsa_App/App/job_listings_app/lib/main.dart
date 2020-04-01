@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'donation_screen.dart';
 import 'models/job.dart';
 
-import 'models/global.dart';
+import './models/global.dart';
+import './widget/tab.dart';
+import './widget/tab_categories/donation.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MaterialApp(home: MyHomePage()));
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -34,6 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
           color: backgroundColor,
           child: Column(
             children: <Widget>[
+              //App Bar Title
               Stack(
                 children: <Widget>[
                   Container(
@@ -50,19 +54,31 @@ class _MyHomePageState extends State<MyHomePage> {
                             bottomLeft: Radius.circular(30),
                             bottomRight: Radius.circular(30))),
                     child: Container(
-                      padding: EdgeInsets.only(top: 50),
+                      //color: Colors.red,
+                      padding: EdgeInsets.only(top: 10),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'IMSA Care',
-                            style: titleStyleWhite,
+                            'IMSA',
+                            style: mainTitleStyleWhite,
                           )
                         ],
                       ),
                     ),
                   ),
-
+                  // Horizontal Tab List Scroll
+                  Container(
+                    margin: EdgeInsets.only(top: 120),
+                    constraints: BoxConstraints.expand(height:200),
+                    child: ListView(
+                      padding: EdgeInsets.only(left: 40),
+                      scrollDirection: Axis.horizontal,
+                      children: getTabCategories()
+                    ),
+                  ),
+                  // Trigger Tab Scren (Currently Only Donation )
                   Container(
                     margin: EdgeInsets.only(top: 200),
                     padding: EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -70,16 +86,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(top: 40),
+                          margin: EdgeInsets.only(top: 40, left: 34),
                           child: Text(
                             "Explore Donation Opportunities",
                             style: titileStyleBlack,
                           ),
                         ),
                         Container(
-                          height: 600,
+                          height: 450,
                           child: ListView(
-                            children: getJobCategories(),
+                            children: getDonateCategories(),
                           ),
                         )
                       ],
@@ -94,93 +110,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<String> jobCategories = [
-    "Zakat Maal",
-    "Shodaqoh",
-    "Alim Scholarship",
-    "Ceria Scholarship",
-    "IMSA Donation",
-    "Wakaf Al-Qur'an",
-    "Wakaf Jembatan",
-    "COVID-19",
-    "Relief Fund",
-    "Humanitarian Fund"
-  ];
-
-  Map jobCatToIcon = {
-    "Zakat Maal": Icon(Icons.monetization_on, color: lightBlueIsh, size: 50),
-    "Shodaqoh": Icon(Icons.spa, color: lightBlueIsh, size: 50),
-    "Alim Scholarship": Icon(Icons.filter_vintage, color: lightBlueIsh, size: 50),
-    "Ceria Scholarship": Icon(Icons.all_inclusive, color: lightBlueIsh, size: 50),
-    "IMSA Donation": Icon(Icons.account_balance, color: lightBlueIsh, size: 50),
-    "Wakaf Al-Qur'an": Icon(Icons.library_books, color: lightBlueIsh, size: 50),
-    "Wakaf Jembatan": Icon(Icons.subway, color: lightBlueIsh, size: 50),
-    "COVID-19": Icon(Icons.bug_report, color: lightBlueIsh, size: 50),
-    "Relief Fund": Icon(Icons.healing, color: lightBlueIsh, size: 50),
-    "Humanitarian Fund": Icon(Icons.favorite, color: lightBlueIsh, size: 50),
-  };
-
-  Widget getCategoryContainer(String categoryName) {
-    return new Container(
-      margin: EdgeInsets.only(right: 10, left: 10, bottom: 20),
-      height: 180,
-      width: 140,
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        boxShadow: [
-          new BoxShadow(
-            color: Colors.grey,
-            blurRadius: 10.0,
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(categoryName, style: titileStyleLighterBlack),
-          Container(
-            //padding: EdgeInsets.only(top: 30),
-            height: 100,
-            width: 70,
-            child: FloatingActionButton(
-              backgroundColor: Colors.white,
-              child: jobCatToIcon[categoryName],
-              elevation: 10,
-              onPressed: () {},
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  List<Widget> getJobCategories() {
-    List<Widget> jobCategoriesCards = [];
-    List<Widget> rows = [];
-    int i = 0;
-    for (String category in jobCategories) {
-      if (i < 2) {
-        rows.add(getCategoryContainer(category));
-        i++;
-      } else {
-        i = 0;
-        jobCategoriesCards.add(new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: rows,
-        ));
-        rows = [];
-        rows.add(getCategoryContainer(category));
-        i++;
-      }
-    }
-    if (rows.length > 0) {
-      jobCategoriesCards.add(new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: rows,
-      ));
-    }
-    return jobCategoriesCards;
-  }
 }
+
+
